@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import configs from '../configs';
-import  logger  from './logger';
+import logger from './logger';
 
 const dbConnect = async()=> {
     if (!configs.mongoUri) {
@@ -9,7 +9,7 @@ const dbConnect = async()=> {
     }
     try {
         const connectionInstance = await mongoose.connect(`${configs.mongoUri}/${configs.dbName}`)
-        logger.info(`MongoDB Connected: ${connectionInstance.connection.host}`)
+        logger.info(`🗄️  Database connected ❤️‍🔥: ${connectionInstance.connection.host}`)
     } catch (error : any) {
         logger.error(`❌ Error connecting to database: ${error}`)
         process.exit(1)
