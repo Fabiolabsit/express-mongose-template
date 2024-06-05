@@ -7,7 +7,7 @@ dotenv.config({ path: envPath });
 
 // Export the configuration object
 export default {
-  port: process.env.PORT,
+  port: process.env.PORT || 3000,
   mongoUri: process.env.MONGO_URI,
   dbName: process.env.DB_NAME,
   nodeEnv: process.env.NODE_ENV,
