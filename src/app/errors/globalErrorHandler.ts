@@ -2,16 +2,17 @@
 import { ErrorRequestHandler } from 'express';
 import config from '../config';
 import { IErrorSources } from '../interfaces/error';
-import logger from '../utils/logger';
+import CustomError from './CusromError';
 import handleCastError from './handleCastError';
 import handleDuplicateError from './handleDuplicateError';
 import handleValidationError from './handlevadiationErrors';
 
 // eslint-disable-next-line
 const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
-  if (config.nodeEnv === 'development') logger.error(err); // Use logger.error for consistency
+  // eslint-disable-next-line no-console
+  if (config.nodeEnv === 'development') console.log(err); // Use logger.error for consistency
   //setting default values
-  let statusCode = 500;
+  let statusCode = err instanceof CustomError ? err.statusCode : 500;
   let message = 'Something went wrong!';
   let errorSources: IErrorSources = [
     {
@@ -46,7 +47,7 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
   }
 
   // custom error
-  else if (err instanceof Error) {
+  else if (err instanceof CustomError) {
     message = err.message;
     errorSources = [
       {
