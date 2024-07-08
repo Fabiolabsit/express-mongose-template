@@ -1,13 +1,15 @@
+/* eslint-disable no-unused-vars */
 import { ErrorRequestHandler } from 'express';
-import configs from '../config';
+import config from '../config';
 import { IErrorSources } from '../interfaces/error';
 import logger from '../utils/logger';
 import handleCastError from './handleCastError';
 import handleDuplicateError from './handleDuplicateError';
 import handleValidationError from './handlevadiationErrors';
 
-const globalErrorHandler: ErrorRequestHandler = (err, req, res) => {
-  if (configs.nodeEnv === 'development') logger.log(err); //logging the error in development mode only
+// eslint-disable-next-line
+const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
+  if (config.nodeEnv === 'development') logger.error(err); // Use logger.error for consistency
   //setting default values
   let statusCode = 500;
   let message = 'Something went wrong!';
@@ -19,7 +21,6 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res) => {
   ];
 
   /* handling different types of errors and setting the response */
-
   //validation error
   if (err?.name === 'ValidationError') {
     const simplifiedError = handleValidationError(err);
@@ -60,8 +61,7 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res) => {
     success: false,
     message,
     errorSources,
-    err,
-    stack: configs.nodeEnv === 'development' ? err?.stack : null,
+    stack: config.nodeEnv === 'development' ? err?.stack : null,
   });
 };
 

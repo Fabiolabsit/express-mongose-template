@@ -9,7 +9,6 @@ export const getAllusers = async (
 ) => {
   try {
     const result = await userServices.getUsers();
-    // console.log(result)
     res.status(200).json(new ApiResponse(200, result));
   } catch (error) {
     next(error);
