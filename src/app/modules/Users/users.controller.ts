@@ -1,29 +1,13 @@
-import { NextFunction, Request, Response } from 'express';
 import { ApiResponse } from '../../utils/ApiResponse';
+import catchAsync from '../../utils/catchAsync';
 import { userServices } from './users.service';
 
-export const getAllusers = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  try {
-    const result = await userServices.getUsers();
-    res.status(200).json(new ApiResponse(200, result));
-  } catch (error) {
-    next(error);
-  }
-};
+export const getAllusers = catchAsync(async (req, res) => {
+  const result = await userServices.getUsers();
+  res.status(200).json(new ApiResponse(200, result));
+});
 
-export const createUser = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  try {
-    const result = await userServices.createUser(req);
-    res.status(200).json(new ApiResponse(200, result));
-  } catch (error) {
-    next(error);
-  }
-};
+export const createUser = catchAsync(async (req, res) => {
+  const result = await userServices.createUser(req);
+  res.status(200).json(new ApiResponse(200, result));
+});
