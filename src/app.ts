@@ -25,6 +25,16 @@ app.get('/', async (req: Request, res: Response) => {
   res.render('welcome', { port: process.env.PORT });
 });
 
+//Not found route
+app.use((req: Request, res: Response) => {
+  res.status(404).json({
+    statusCode: 404, // Not Found
+    data: null,
+    message: 'Resource not found',
+    success: false,
+  });
+});
+
 // Error handling
 app.use(globalErrorHandler);
 
