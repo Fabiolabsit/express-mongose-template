@@ -6,6 +6,7 @@ import CustomError from './CusromError';
 import handleCastError from './handleCastError';
 import handleDuplicateError from './handleDuplicateError';
 import handleValidationError from './handlevadiationErrors';
+import handleZodError from './handleZodError';
 
 // eslint-disable-next-line
 const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
@@ -25,6 +26,14 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
   //validation error
   if (err?.name === 'ValidationError') {
     const simplifiedError = handleValidationError(err);
+    statusCode = simplifiedError?.statusCode;
+    message = simplifiedError?.message;
+    errorSources = simplifiedError?.errorSources;
+  }
+
+  // zod error
+  else if (err?.name === 'ZodError') {
+    const simplifiedError = handleZodError(err);
     statusCode = simplifiedError?.statusCode;
     message = simplifiedError?.message;
     errorSources = simplifiedError?.errorSources;
@@ -59,6 +68,8 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
 
   //ultimate return
   return res.status(statusCode).json({
+    statusCode,
+    data : null,
     success: false,
     message,
     errorSources,
