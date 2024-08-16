@@ -19,21 +19,21 @@
     "ejs": "^3.1.10",
     "express": "^4.19.2",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.4.5",
-    "winston": "^3.13.0",
+    "mongoose": "^8.5.3",
+    "winston": "^3.14.2",
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@eslint/js": "^9.6.0",
+    "@eslint/js": "^9.9.0",
     "@types/bcrypt": "^5.0.2",
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
     "@types/jsonwebtoken": "^9.0.6",
-    "eslint": "9.6.0",
-    "globals": "^15.8.0",
-    "prettier": "^3.3.2",
+    "eslint": "9.9.0",
+    "globals": "^15.9.0",
+    "prettier": "^3.3.3",
     "ts-node-dev": "^2.0.0",
-    "typescript": "^5.5.3",
-    "typescript-eslint": "^7.15.0"
+    "typescript": "^5.5.4",
+    "typescript-eslint": "^8.1.0"
   }
 }

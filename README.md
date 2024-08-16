@@ -16,6 +16,12 @@ rm -rf .git
 MONGO_URI=mongodb://localhost:27017
 DB_NAME=demo
 NODE_ENV=development
+# The following variables are optional and can be changed to your preference
+BCRYPT_SALT_ROUNDS=10
+ACCESS_TOKEN_SECRET=1234567890
+ACCESS_TOKEN_EXPIRY=1h
+REFRESH_TOKEN_SECRET=0987654321
+REFRESH_TOKEN_EXPIRY=7d
 
 # Install the dependencies
 yarn install
