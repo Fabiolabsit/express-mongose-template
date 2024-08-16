@@ -8,6 +8,9 @@ export const getAllusers = catchAsync(async (req, res) => {
 });
 
 export const createUser = catchAsync(async (req, res) => {
-  const result = await userServices.createUser(req);
-  res.status(200).json(new ApiResponse(200, result));
+  const data = req.body;
+
+  const createdUser = await userServices.createUser(data);
+
+  res.status(200).json(new ApiResponse(200 , createdUser));
 });
