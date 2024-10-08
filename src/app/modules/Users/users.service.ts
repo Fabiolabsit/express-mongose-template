@@ -1,4 +1,3 @@
-
 import CustomError from '../../errors/CusromError';
 import { IUser } from './users.interface';
 import Users from './users.model';
@@ -31,23 +30,26 @@ const getUsers = async () => {
   return result;
 };
 
-
-
 const createUser = async (userData: IUser) => {
   const user = await Users.create(userData);
   //generate access and refresh token
-  const { accessToken, refreshToken } = await generateAccessAndRefreshToken(user._id.toString());
-  
-  //remove the password from the response 
+  const { accessToken, refreshToken } = await generateAccessAndRefreshToken(
+    user._id.toString(),
+  );
+
+  //remove the password from the response
   const result = {
     ...user.toJSON(),
     accessToken,
     refreshToken,
-    
   };
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   delete (result as any)?.password;
   return result;
 };
 
-export const userServices = { getUsers, createUser , generateAccessAndRefreshToken};
+export const userServices = {
+  getUsers,
+  createUser,
+  generateAccessAndRefreshToken,
+};
