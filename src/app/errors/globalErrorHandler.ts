@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { ErrorRequestHandler } from 'express';
+import { ZodError } from 'zod';
 import config from '../config';
 import { IErrorSources } from '../interfaces/error';
 import CustomError from './CusromError';
@@ -12,6 +13,7 @@ import handleZodError from './handleZodError';
 const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
   // eslint-disable-next-line no-console
   if (config.nodeEnv === 'development') console.log(err); // Use logger.error for consistency
+
   //setting default values
   let statusCode = err instanceof CustomError ? err.statusCode : 500;
   let message = 'Something went wrong!';
@@ -23,17 +25,18 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
   ];
 
   /* handling different types of errors and setting the response */
-  //validation error
-  if (err?.name === 'ValidationError') {
-    const simplifiedError = handleValidationError(err);
+
+  // zod error
+  if (err instanceof ZodError) {
+    const simplifiedError = handleZodError(err);
     statusCode = simplifiedError?.statusCode;
     message = simplifiedError?.message;
     errorSources = simplifiedError?.errorSources;
   }
 
-  // zod error
-  else if (err?.name === 'ZodError') {
-    const simplifiedError = handleZodError(err);
+  //validation error
+  if (err?.name === 'ValidationError') {
+    const simplifiedError = handleValidationError(err);
     statusCode = simplifiedError?.statusCode;
     message = simplifiedError?.message;
     errorSources = simplifiedError?.errorSources;
@@ -69,9 +72,9 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
   //ultimate return
   return res.status(statusCode).json({
     statusCode,
-    data : null,
+    data: null,
     success: false,
-    message,
+    message: message || 'Something went wrong!',
     errorSources,
     stack: config.nodeEnv === 'development' ? err?.stack : null,
   });
