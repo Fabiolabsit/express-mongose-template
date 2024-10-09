@@ -15,7 +15,7 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
   if (config.nodeEnv === 'development') console.log(err); // Use logger.error for consistency
 
   //setting default values
-  let statusCode = err instanceof CustomError ? err.statusCode : 500;
+  let statusCode = 500;
   let message = 'Something went wrong!';
   let errorSources: IErrorSources = [
     {
@@ -60,6 +60,17 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
 
   // custom error
   else if (err instanceof CustomError) {
+    statusCode = err.statusCode;
+    message = err.message;
+    errorSources = [
+      {
+        path: '',
+        message: err?.message,
+      },
+    ];
+  }
+
+  else if (err instanceof Error) {
     message = err.message;
     errorSources = [
       {
